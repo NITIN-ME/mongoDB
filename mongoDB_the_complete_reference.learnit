@@ -1,0 +1,97 @@
+# Official Documentation at http://docs.mongodb.org
+
+> "use strict" (In JavaScript)
+> use mydb
+> db.users.insert({"name": "Nitin"})
+> db.users.find()
+
+####################################################################################################
+				T   O    O     L    S          F    O    R        N    I  N    J    A    S
+			
+								mongodump and mongorestore
+								mongoexport and mongoimport
+								mongosniff
+								mongostat
+								mongotop.
+								mongoperf
+								mongooplog
+								Bsondump
+
+####################################################################################################
+
+> cat jokes.json | mongoimport -c jokes --jsonArray
+> db.users.find({username: "jones"})
+> db.users.find({_id: ObjectId("552e458158cd52bcb257c324"), username: "smith"})
+> db.users.find({ $and: [{ _id: ObjectId("552e458158cd52bcb257c324") }, { username: "smith" }] })
+> db.users.find({ $or: [ { username: "smith" }, { username: "jones" } ]})
+> db.users.update({username: "smith"}, {$set: {country: "Canada"}})
+> db.users.update({username: "smith"}, {country: "Canada"})
+> db.users.update({country: "Canada"}, {$set: {username: "smith"}})
+> db.users.find({country: "Canada"})
+> db.users.update({username: "smith"}, {$unset: {country: 1}})
+> db.users.find({username: "smith"})
+
+{
+	username: "smith",
+	favorites: {
+		cities: ["Chicago", "Cheyenne"],
+		movies: ["Casablanca", "For a Few Dollars More", "The Sting"]
+	}
+}
+
+> db.users.update( {username: "smith"},
+{
+	$set: {
+		favorites: {
+			cities: ["Chicago", "Cheyenne"],
+			movies: ["Casablanca", "For a Few Dollars More", "The Sting"]
+		}
+	}
+})
+
+> db.users.find().pretty()
+> db.users.find({"favorites.movies": "Casablanca"})
+
+> db.users.update( {"favorites.movies": "Casablanca"},
+{
+	$addToSet/$push: {"favorites.movies": "The Maltese Falcon"} 
+},false, true )
+
+// third argument checks for already presence to create new, fourth argument check for multiple matches
+
+> db.foo.remove()
+> db.users.remove({"favorites.cities": "Cheyenne"})
+> db.users.drop()
+> help
+> db.help()
+$ mongo --help
+
+> for(i = 0; i < 20000; i++) {
+		db.numbers.save({num: i});
+	}
+
+> db.numbers.count()
+> db.numbers.find()
+> db.numbers.find({num: 500})
+> db.numbers.find( {num: {"$gt": 19995 }} )
+> db.numbers.find( {num: {"$gt": 20, "$lt": 25 }} )
+// We can also use $gte, $lte, and $ne
+
+> db.numbers.find({num: {"$gt": 19995}}).explain("executionStats")
+> db.numbers.createIndex({num: 1})
+> db.numbers.getIndexes()
+> db.numbers.find({num: {"$gt": 19995 }}).explain("executionStats")
+> show dbs
+> show collections
+
+// The getIndexes() Java-Script method can be replaced by the
+	 db.runCommand( {"listIndexes": "numbers"} )shell command.
+
+
+> db.stats() or > db.runCommand( {dbstats: 1} )
+> db.numbers.stats()
+> db.runCommand
+// To get the implementation of any method miss the braces.
+
+// save() is merely a wrapper for insert() and update()
+
